@@ -339,8 +339,10 @@ int runCommand(struct job newJob, struct jobSet * jobList,
                 
                 if(runner->numProgs = runner->stoppedProgs)
                     statusString = "Stopped";
-                else
+                else if(runner->numProgs = runner->runningProgs)
                     statusString = "Running";
+                else
+                    return 1;
                 
                 printf(JOB_STATUS_FORMAT, runner->jobId, statusString, runner->text);
            
@@ -409,9 +411,7 @@ int runCommand(struct job newJob, struct jobSet * jobList,
             {
                 flag = 1;
                 break;
-            }
-                
-            
+            }                            
             runner = runner->next;
         }   
 
@@ -424,7 +424,7 @@ int runCommand(struct job newJob, struct jobSet * jobList,
             {
                 printf("move %s(%d) to fg", runner->text ,runner->jobId);
                 tcsetpgrp(0,runner->pgrp);
-                jobList->fg = runner;
+                //jobList->fg = runner;
                 
             }
                 
