@@ -416,28 +416,27 @@ int runCommand(struct job newJob, struct jobSet * jobList,
         }   
 
         if(flag == 0)
-            printf("\n id not found;");
+            return 1;
 
-        if(flag == 1)
+        // put the jos in the foreground
+        if(strcmp(newJob.progs[0].argv[0], "fg") == 0)
         {
-            if(strcmp(newJob.progs[0].argv[0], "fg") == 0)
-            {
-                printf("move %s(%d) to fg", runner->text ,runner->jobId);
-                tcsetpgrp(0,runner->pgrp);
-                //jobList->fg = runner;
-                
-            }
-                
-
-            if(strcmp(newJob.progs[0].argv[0], "bg") == 0)
-            {
-                printf("move to bg");
-            }
-                
+            printf("move %s(%d) to fg", runner->text ,runner->jobId);
+            tcsetpgrp(0,runner->pgrp);
+            jobList->fg = runner;
         }
+            
+        // kill jobs
+        kill(-job->pgrp, SIGCONT);
 
+        // set 0 in stoppedProgs           
+        runner->stoppedProgs = 0;
+    	for (i=0; i<runner->numProgs; ++i) 
+        {
+            runner->progs[i].isStopped = 0;
+        }
    
-        printf("\nwow\n");
+        
         return 0;
     }
 
