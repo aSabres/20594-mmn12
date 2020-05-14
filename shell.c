@@ -1,6 +1,6 @@
 /* 
- * TODO: - fill the missing parts
- *       - write Makefile with 'shell' executable as a target
+ * Asaf Abres
+ *       
  */
 #include <ctype.h>
 #include <errno.h>
