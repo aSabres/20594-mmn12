@@ -400,7 +400,6 @@ int runCommand(struct job newJob, struct jobSet * jobList,
         
         // check if the number has a matching id in the jobList
         int inputId = atoi(newJob.progs[0].argv[1]+1);
-        printf("\n-- %d",inputId);
 
         int flag = 0; // 0 - id not int jobList, 1 id in jobList
 
@@ -415,23 +414,26 @@ int runCommand(struct job newJob, struct jobSet * jobList,
             runner = runner->next;
         }   
 
+        // if job id dosent exists
         if(flag == 0)
             return 1;
 
+        
+
         // put the jos in the foreground
-        if(strcmp(newJob.progs[0].argv[0], "fg") == 0)
+        if(strcmp(newJob.progs[0].argv[0],"fg") == 0)
         {
-            printf("move %s(%d) to fg", runner->text ,runner->jobId);
+            printf("\nmario ");
             tcsetpgrp(0,runner->pgrp);
             jobList->fg = runner;
         }
             
         // kill jobs
-        kill(-job->pgrp, SIGCONT);
+        kill(-runner->pgrp, SIGCONT);
 
         // set 0 in stoppedProgs           
         runner->stoppedProgs = 0;
-    	for (i=0; i<runner->numProgs; ++i) 
+    	for (i=0; i<runner->numProgs; i++) 
         {
             runner->progs[i].isStopped = 0;
         }
